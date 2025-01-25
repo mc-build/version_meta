@@ -23,10 +23,10 @@ jobs:
               id: git-check
               run: |
                 git add result.json
-                git diff --staged --quiet || echo "changed=true" >> $GITHUB_OUTPUT
+                git diff --staged --quiet || echo "changed=true" >> $GITHUB_ENV
 
             - name: Commit changes
-              if: steps.git-check.outputs.changed == 'true'
+              if: jobs.run-and-commit.steps.git-check.env.changed == 'true'
               run: |
                 git config --global user.name 'GitHub Actions Bot'
                 git config --global user.email 'actions@github.com'
