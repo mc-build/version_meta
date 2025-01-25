@@ -2,7 +2,7 @@ name: Daily Runner
 
 on:
     schedule:
-        - cron: '0 0 * * *'  # Runs at 00:00 UTC every day
+        - cron: '0 1 * * *'  # Runs at 00:00 UTC every day
     workflow_dispatch:      # Also allows manual triggering
 
 jobs:
