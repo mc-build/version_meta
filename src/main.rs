@@ -1,4 +1,4 @@
-use std::{collections::HashMap, fs, hash::Hash, io::{Cursor, Read}, path::{Path, PathBuf}, str::from_utf8};
+use std::{collections::BTreeMap, fs, io::{Cursor, Read}};
 
 use serde::{Deserialize, Serialize};
 use tokio::task::JoinSet;
@@ -17,15 +17,15 @@ struct Version {
     }
      */
     id: String,
-    #[serde(rename = "type")]
-    type_: String,
+    // #[serde(rename = "type")]
+    // type_: String,
     url: String,
-    time: String,
-    #[serde(rename = "releaseTime")]
-    release_time: String,
-    sha1: String,
-    #[serde(rename = "complianceLevel")]
-    compliance_level: i32,
+    // time: String,
+    // #[serde(rename = "releaseTime")]
+    // release_time: String,
+    // sha1: String,
+    // #[serde(rename = "complianceLevel")]
+    // compliance_level: i32,
 }
 #[derive(Deserialize)]
 struct LauncherMetaV2{
@@ -41,12 +41,12 @@ struct ClientMetaDownloads{
 }
 #[derive(Deserialize)]
 struct ClientMetaDownload{
-    sha1: String,
-    size: i32,
-    url: String,
+    // pub sha1: String,
+    // pub size: i32,
+    pub url: String,
 }
 #[derive(Deserialize,Serialize)]
-struct VersionResult(pub HashMap<String, i32>);
+struct VersionResult(pub BTreeMap<String, i32>);
 #[derive(Deserialize)]
 struct MCVersionData{
     data:i32
@@ -98,7 +98,7 @@ async fn main() {
                     println!("version {} has a datapack version {}", id,data.pack_version.data);
                     return (id, data.pack_version.data);
                 },
-                Err(e) => {
+                Err(_e) => {
                     println!("version {} does not have a datapack version", id);
                     return (id, -1);
                 }
