@@ -11,21 +11,10 @@ jobs:
         steps:
             - uses: actions/checkout@v3
 
-            # - name: Install Rust
-            #   uses: actions-rs/toolchain@v1
-            #   with:
-            #     toolchain: stable
-
             - name: Run cargo
               run: cargo run
 
-            # - name: Check for changes
-            #   id: git-check
-            #   run: |
-            #     git diff --staged --quiet || echo "changed=true" >> $GITHUB_ENV
-
             - name: Commit changes
-              # if: job.run-and-commit.steps.git-check.env.changed == 'true'
               run: |
                 git add result.json
                 git config --global user.name 'GitHub Actions Bot'
