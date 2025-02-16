@@ -19,15 +19,15 @@ jobs:
             - name: Run cargo
               run: cargo run
 
-            - name: Check for changes
-              id: git-check
-              run: |
-                git add result.json
-                git diff --staged --quiet || echo "changed=true" >> $GITHUB_ENV
+            # - name: Check for changes
+            #   id: git-check
+            #   run: |
+            #     git diff --staged --quiet || echo "changed=true" >> $GITHUB_ENV
 
             - name: Commit changes
-              if: job.run-and-commit.steps.git-check.env.changed == 'true'
+              # if: job.run-and-commit.steps.git-check.env.changed == 'true'
               run: |
+                git add result.json
                 git config --global user.name 'GitHub Actions Bot'
                 git config --global user.email 'actions@github.com'
                 git commit -m "Auto-update result.json"
