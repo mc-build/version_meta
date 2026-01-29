@@ -53,7 +53,7 @@ struct ClientMetaDownload {
 #[serde(untagged)]
 enum PackVersion {
     Single(i32),
-    Tuple(i32, i32),
+    MajorMinor(i32, i32),
 }
 
 #[derive(Deserialize, Serialize)]
@@ -153,7 +153,7 @@ async fn main() {
                                 "version {} has a datapack version [{}, {}]",
                                 id, new.data_major, new.data_minor
                             );
-                            (id, PackVersion::Tuple(new.data_major, new.data_minor))
+                            (id, PackVersion::MajorMinor(new.data_major, new.data_minor))
                         }
                     },
                     Err(_e) => {
@@ -207,7 +207,7 @@ mod tests {
         results.insert("1.13".to_string(), PackVersion::Single(4));
 
         // New format: tuple of [data_major, data_minor]
-        results.insert("26.1-snapshot-5".to_string(), PackVersion::Tuple(98, 0));
+        results.insert("26.1-snapshot-5".to_string(), PackVersion::MajorMinor(98, 0));
 
         let json = serde_json::to_string_pretty(&VersionResult(results.clone())).unwrap();
         println!("Generated JSON:\n{}", json);
@@ -227,11 +227,11 @@ mod tests {
         }
 
         match parsed.0.get("26.1-snapshot-5").unwrap() {
-            PackVersion::Tuple(major, minor) => {
+            PackVersion::MajorMinor(major, minor) => {
                 assert_eq!(*major, 98);
                 assert_eq!(*minor, 0);
             }
-            _ => panic!("Expected Tuple variant"),
+            _ => panic!("Expected MajorMinor variant"),
         }
     }
 
@@ -270,11 +270,11 @@ mod tests {
         assert_eq!(parsed.0.len(), 2);
 
         match parsed.0.get("26.1-snapshot-5").unwrap() {
-            PackVersion::Tuple(major, minor) => {
+            PackVersion::MajorMinor(major, minor) => {
                 assert_eq!(*major, 98);
                 assert_eq!(*minor, 0);
             }
-            _ => panic!("Expected Tuple variant for new format"),
+            _ => panic!("Expected MajorMinor variant for new format"),
         }
     }
 
